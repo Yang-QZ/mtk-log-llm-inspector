@@ -206,3 +206,7 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# MTK Log LLM Inspector output directories
+output/
+out/
