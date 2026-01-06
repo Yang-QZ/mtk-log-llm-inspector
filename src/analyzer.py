@@ -160,7 +160,7 @@ class WindowAnalyzer:
         """Count segments by state."""
         counts = {"PLAYING": 0, "MUTED": 0, "UNKNOWN": 0}
         for seg in segments:
-            counts[seg.state] = counts.get(seg.state, 0) + 1
+            counts[seg.state] += 1
         return counts
 
     def generate_markdown_report(

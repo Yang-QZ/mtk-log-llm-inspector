@@ -251,18 +251,25 @@ def test_generate_report():
 
 
 def test_count_states():
-    """Test state counting."""
+    """Test state counting through generate_report."""
     analyzer = WindowAnalyzer()
     
-    segments = [
-        AudioSegment("PLAYING", 0, 1, 0.9, [], []),
-        AudioSegment("PLAYING", 2, 3, 0.85, [], []),
-        AudioSegment("MUTED", 4, 5, 0.95, [], []),
-        AudioSegment("UNKNOWN", 6, 6, 0.5, [], []),
+    window_results = [
+        {"window_idx": 0, "final_state": "PLAYING", "confidence": 0.9, "reason": "R1", "evidence": []},
+        {"window_idx": 1, "final_state": "PLAYING", "confidence": 0.85, "reason": "R2", "evidence": []},
+        {"window_idx": 2, "final_state": "MUTED", "confidence": 0.95, "reason": "R3", "evidence": []},
+        {"window_idx": 3, "final_state": "PLAYING", "confidence": 0.9, "reason": "R5", "evidence": []},
+        {"window_idx": 4, "final_state": "UNKNOWN", "confidence": 0.5, "reason": "R4", "evidence": []},
     ]
     
-    counts = analyzer._count_states(segments)
+    segments = analyzer.merge_windows(window_results)
     
+    metadata = {"log_file": "/test.log", "timestamp": "2024-01-06"}
+    report = analyzer.generate_report(segments, window_results, metadata)
+    
+    # Verify state counts through the public API
+    # Should have: PLAYING (0-1), MUTED (2), PLAYING (3), UNKNOWN (4) = 2 PLAYING, 1 MUTED, 1 UNKNOWN
+    counts = report["summary"]["states_distribution"]
     assert counts["PLAYING"] == 2
     assert counts["MUTED"] == 1
     assert counts["UNKNOWN"] == 1
