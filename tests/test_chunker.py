@@ -114,7 +114,7 @@ def test_chunk_large_overlap():
     # Window 0: L1-L5 (0-4)
     # Window 1: L2-L6 (1-5)
     # Window 2: L3-L7 (2-6)
-    assert len(windows) == 5
+    assert len(windows) == 3
     assert windows[0][1] == ["L1", "L2", "L3", "L4", "L5"]
     assert windows[1][1] == ["L2", "L3", "L4", "L5", "L6"]
     assert windows[2][1] == ["L3", "L4", "L5", "L6", "L7"]

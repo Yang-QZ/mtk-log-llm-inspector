@@ -1,0 +1,47 @@
+01-06 10:15:23.456  1234  1235 I AudioFlinger: AudioFlinger's thread 0xb4000071f3f18800 ready to run
+01-06 10:15:23.457  1234  1235 D AudioFlinger: createTrack() sessionId: 12345 type: 1
+01-06 10:15:23.458  1234  1235 D AudioTrack: set() streamType: MUSIC sampleRate: 48000 format: 0x1 channelMask: 0x3
+01-06 10:15:23.459  1234  1235 I AudioPolicyService: getOutputForAttr() stream MUSIC, sampling rate 48000, format 1
+01-06 10:15:23.460  1234  1235 D AudioFlinger: Track started on output 13, session 12345
+01-06 10:15:23.500  1234  1236 D AudioFlinger: mixer thread: track started, state=ACTIVE
+01-06 10:15:23.550  1234  1236 V AudioFlinger: obtainBuffer() success, buffer size: 4096
+01-06 10:15:23.600  1234  1236 V AudioFlinger: write() to track, 4096 bytes written
+01-06 10:15:23.650  1234  1236 D AudioManager: setStreamVolume() stream=MUSIC level=15 flags=0
+01-06 10:15:24.000  1234  1236 D AudioFlinger: PlaybackThread: active track count 1
+01-06 10:15:24.050  1234  1236 V AudioTrack: Buffer obtained successfully, frames: 1024
+01-06 10:15:24.100  1234  1236 D audio_hw: adev_set_parameters(): routing=2
+01-06 10:15:24.150  1234  1236 I AudioFlinger: Audio routing: output device SPEAKER
+01-06 10:15:24.200  1234  1236 D AudioFlinger: stream MUSIC unmuted, volume=1.0
+01-06 10:15:25.000  1234  1236 D AudioFlinger: PlaybackThread: processing active tracks
+01-06 10:15:25.100  1234  1236 V AudioFlinger: mixing audio data for active tracks
+01-06 10:15:25.200  1234  1236 D AudioFlinger: Track state=ACTIVE, frames ready: 2048
+01-06 10:15:26.000  1234  1236 D MediaPlayer: start() called, state=PREPARED
+01-06 10:15:26.050  1234  1236 I AudioTrack: AudioTrack started successfully
+01-06 10:15:26.100  1234  1236 D AudioFlinger: Track playing, session 12345
+01-06 10:15:27.000  1234  1236 D AudioFlinger: Active playback, output device: SPEAKER
+01-06 10:15:27.500  1234  1236 V AudioFlinger: Audio data flowing, no underruns
+01-06 10:15:28.000  1234  1236 D AudioFlinger: PlaybackThread healthy, latency: 45ms
+01-06 10:15:30.000  1234  1236 I AudioManager: User requested volume change
+01-06 10:15:30.050  1234  1236 D AudioManager: setStreamMute() stream=MUSIC muted=true
+01-06 10:15:30.100  1234  1236 D AudioFlinger: stream MUSIC muted
+01-06 10:15:30.150  1234  1236 I AudioFlinger: Applying mute to output device
+01-06 10:15:30.200  1234  1236 D audio_hw: set_stream_mute(): mute=1
+01-06 10:15:30.500  1234  1236 D AudioFlinger: Track still active but muted
+01-06 10:15:31.000  1234  1236 V AudioFlinger: Processing muted stream
+01-06 10:15:31.500  1234  1236 D AudioFlinger: Muted state confirmed
+01-06 10:15:32.000  1234  1236 D AudioFlinger: PlaybackThread running with muted output
+01-06 10:15:35.000  1234  1236 I AudioManager: User requested unmute
+01-06 10:15:35.050  1234  1236 D AudioManager: setStreamMute() stream=MUSIC muted=false
+01-06 10:15:35.100  1234  1236 D AudioFlinger: stream MUSIC unmuted
+01-06 10:15:35.150  1234  1236 I AudioFlinger: Removing mute from output device
+01-06 10:15:35.200  1234  1236 D audio_hw: set_stream_mute(): mute=0
+01-06 10:15:35.500  1234  1236 D AudioFlinger: Track active and unmuted
+01-06 10:15:36.000  1234  1236 V AudioFlinger: Audio playback resumed
+01-06 10:15:36.500  1234  1236 D AudioFlinger: Playing state confirmed, volume=1.0
+01-06 10:15:40.000  1234  1236 I MediaPlayer: stop() called
+01-06 10:15:40.050  1234  1236 D AudioTrack: stop() called, state=STARTED
+01-06 10:15:40.100  1234  1236 D AudioFlinger: Track stopped, session 12345
+01-06 10:15:40.150  1234  1236 I AudioFlinger: Track state changed to STOPPED
+01-06 10:15:40.200  1234  1236 D AudioFlinger: No active tracks remaining
+01-06 10:15:40.250  1234  1236 D AudioFlinger: PlaybackThread: standby mode
+01-06 10:15:40.300  1234  1236 I audio_hw: adev_standby(): entering standby mode
