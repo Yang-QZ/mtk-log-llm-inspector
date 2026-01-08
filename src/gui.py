@@ -22,6 +22,9 @@ from .chunker import LogChunker
 from .masker import DataMasker
 from .analyzer import WindowAnalyzer
 
+# Constants
+MIN_SPEC_DOC_LENGTH = 50  # Minimum length for specification document to be considered valid
+
 
 class LogInspectorGUI:
     """Main GUI application class for MTK Log LLM Inspector.
@@ -275,7 +278,7 @@ class LogInspectorGUI:
                 'api_key': self.api_key_var.get(),
                 'model': self.model_var.get()
             }
-            with open(config_path, 'w') as f:
+            with open(config_path, 'w', encoding='utf-8') as f:
                 json.dump(config, f)
             messagebox.showinfo("成功 Success", "API密钥已保存 API key saved successfully")
         except Exception as e:
@@ -300,7 +303,8 @@ class LogInspectorGUI:
         在单独的线程中开始日志分析。
         """
         # Validate inputs
-        if not self.api_key_var.get():
+        api_key = self.api_key_var.get().strip()
+        if not api_key:
             messagebox.showerror("错误 Error", "请先配置API密钥 Please configure API key first")
             return
         
@@ -318,8 +322,8 @@ class LogInspectorGUI:
         # Clear previous results
         self.results_text.delete('1.0', tk.END)
         
-        # Start analysis in a separate thread
-        self.analysis_thread = threading.Thread(target=self._run_analysis, daemon=True)
+        # Start analysis in a separate thread (non-daemon for proper cleanup)
+        self.analysis_thread = threading.Thread(target=self._run_analysis, daemon=False)
         self.analysis_thread.start()
     
     def _run_analysis(self):
@@ -344,7 +348,7 @@ class LogInspectorGUI:
             system_prompt = self._load_system_prompt()
             
             # Add specification document to system prompt if provided
-            if self.spec_doc_text and len(self.spec_doc_text) > 50:
+            if self.spec_doc_text and len(self.spec_doc_text) > MIN_SPEC_DOC_LENGTH:
                 system_prompt += f"\n\n## 日志规范文档 Log Specification Document\n\n{self.spec_doc_text}"
             
             # Parse and filter log
