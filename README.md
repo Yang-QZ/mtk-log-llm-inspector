@@ -67,9 +67,11 @@ python run_gui.py
 
 2. **Analysis Tab (分析)**:
    - Click "Browse" to select a log file, or drag and drop a file onto the window
-   - Enter your log specification document (optional but recommended)
+   - Enter your **log specification document** (optional but recommended)
      - Describe what different log tags and fields mean
-     - This helps the LLM understand your specific log format
+     - Explain status codes and their significance
+     - This helps the LLM understand your specific log format better
+     - Example: "AudioFlinger: Audio mixer service, Track started: Audio track began playing"
    - Click "Start Analysis" to begin
 
 3. **Results Tab (结果)**:
@@ -77,6 +79,8 @@ python run_gui.py
    - See the state of each window and merged segments
    - Save results to JSON and Markdown files
    - Clear results when done
+
+📖 **For detailed GUI instructions, see [GUI User Guide](docs/gui_guide.md)**
 
 ### CLI Application
 
@@ -184,6 +188,7 @@ mtk-log-llm-inspector/
 ├── src/
 │   ├── __init__.py
 │   ├── cli.py              # Main CLI entry point
+│   ├── gui.py              # GUI application for Windows 11
 │   ├── bailian_client.py   # Alibaba Cloud Bailian API client
 │   ├── log_parser.py       # Log file parsing and filtering
 │   ├── chunker.py          # Window chunking with overlap
@@ -196,15 +201,28 @@ mtk-log-llm-inspector/
 │   ├── test_masker.py
 │   └── test_analyzer.py
 ├── docs/
-│   └── prompt.md           # LLM system prompt
+│   ├── prompt.md           # LLM system prompt
+│   ├── design_zh.md        # Design document (Chinese)
+│   └── gui_guide.md        # GUI user guide
 ├── samples/
 │   └── demo.log            # Sample logcat file
+├── run_gui.py              # GUI launcher script
+├── run_gui.bat             # Windows batch file to launch GUI
 ├── requirements.txt
 └── README.md
 ```
 
 ## How It Works
 
+### GUI Mode (Recommended for Windows)
+1. **Configure**: Set up API key and analysis parameters in the Configuration tab
+2. **Select File**: Choose or drag-drop log file in the Analysis tab
+3. **Add Context**: Provide log specification document to help LLM understand your log format
+4. **Analyze**: Start analysis and watch real-time progress
+5. **Review**: View detailed results in the Results tab
+6. **Save**: Export JSON and Markdown reports
+
+### CLI Mode
 1. **Parse & Filter**: Reads the log file and filters for audio-related lines using configurable tag matching
 2. **Chunk**: Splits filtered lines into overlapping windows (default: 200 lines with 50-line overlap)
 3. **Analyze**: For each window, sends to Bailian LLM with system prompt to get structured JSON response
