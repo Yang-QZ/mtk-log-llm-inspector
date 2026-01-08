@@ -48,14 +48,15 @@ class LogInspectorGUI:
         self.overlap_var = tk.IntVar(value=50)
         self.mask_var = tk.BooleanVar(value=False)
         
+        # Results storage
+        self.analysis_report = None
+        self.markdown_report = None
+        
         # Load saved API key if exists
         self._load_config()
         
         # Setup UI
         self._create_widgets()
-        
-        # Enable drag and drop
-        self._setup_drag_drop()
     
     def _create_widgets(self):
         """Create all GUI widgets.
@@ -190,24 +191,25 @@ class LogInspectorGUI:
             "- Stream active: 音频流处于活动状态 Audio stream is active\n"
         )
         
-        # Action Buttons
-        action_frame = ttk.Frame(parent)
-        action_frame.pack(fill='x', padx=10, pady=10)
+        # Action buttons
+        button_frame = ttk.Frame(parent)
+        button_frame.pack(fill='x', padx=10, pady=10)
         
         self.analyze_btn = ttk.Button(
-            action_frame,
+            button_frame,
             text="开始分析 Start Analysis",
             command=self._start_analysis
         )
         self.analyze_btn.pack(side='left', padx=5)
         
-        self.stop_btn = ttk.Button(
-            action_frame,
-            text="停止 Stop",
-            command=self._stop_analysis,
-            state='disabled'
-        )
-        self.stop_btn.pack(side='left', padx=5)
+        # Note: Stop functionality not yet implemented
+        # self.stop_btn = ttk.Button(
+        #     action_frame,
+        #     text="停止 Stop",
+        #     command=self._stop_analysis,
+        #     state='disabled'
+        # )
+        # self.stop_btn.pack(side='left', padx=5)
         
         # Progress Section
         progress_frame = ttk.Frame(parent)
@@ -248,15 +250,6 @@ class LogInspectorGUI:
             side='left', padx=5
         )
     
-    def _setup_drag_drop(self):
-        """Setup drag and drop functionality.
-        设置拖拽功能。
-        """
-        # Note: Basic tkinter doesn't support drag-drop on Windows directly
-        # This would require tkinterdnd2 library for full functionality
-        # For now, we'll add a note in the GUI
-        pass
-    
     def _load_config(self):
         """Load saved configuration.
         加载保存的配置。
@@ -264,11 +257,12 @@ class LogInspectorGUI:
         config_path = Path.home() / ".mtk_log_inspector_config.json"
         if config_path.exists():
             try:
-                with open(config_path, 'r') as f:
+                with open(config_path, 'r', encoding='utf-8') as f:
                     config = json.load(f)
                     self.api_key_var.set(config.get('api_key', ''))
                     self.model_var.set(config.get('model', 'qwen-plus'))
-            except Exception:
+            except (FileNotFoundError, json.JSONDecodeError, PermissionError) as e:
+                # Silently ignore config load errors
                 pass
     
     def _save_api_key(self):
@@ -314,9 +308,8 @@ class LogInspectorGUI:
             messagebox.showerror("错误 Error", "请选择有效的日志文件 Please select a valid log file")
             return
         
-        # Disable analyze button and enable stop button
+        # Disable analyze button
         self.analyze_btn.config(state='disabled')
-        self.stop_btn.config(state='normal')
         self.progressbar.start()
         
         # Get specification document
@@ -329,15 +322,6 @@ class LogInspectorGUI:
         self.analysis_thread = threading.Thread(target=self._run_analysis, daemon=True)
         self.analysis_thread.start()
     
-    def _stop_analysis(self):
-        """Stop the ongoing analysis.
-        停止正在进行的分析。
-        """
-        # Note: Stopping a running thread is complex and not recommended
-        # This is a placeholder for future implementation
-        self.progress_var.set("正在停止... Stopping...")
-        # In a real implementation, you would need to implement proper cancellation
-    
     def _run_analysis(self):
         """Run the actual analysis (called in separate thread).
         运行实际的分析（在单独的线程中调用）。
@@ -345,11 +329,8 @@ class LogInspectorGUI:
         try:
             self._update_progress("初始化组件... Initializing components...")
             
-            # Set API key as environment variable temporarily
-            os.environ['BAILIAN_API_KEY'] = self.api_key_var.get()
-            
-            # Initialize components
-            client = BailianClient(model=self.model_var.get())
+            # Initialize components with API key passed directly
+            client = BailianClient(api_key=self.api_key_var.get(), model=self.model_var.get())
             parser = LogParser()
             chunker = LogChunker(
                 chunk_size=self.chunk_size_var.get(),
@@ -448,9 +429,8 @@ class LogInspectorGUI:
             messagebox.showerror("错误 Error", error_msg)
         
         finally:
-            # Re-enable buttons
+            # Re-enable button
             self.root.after(0, lambda: self.analyze_btn.config(state='normal'))
-            self.root.after(0, lambda: self.stop_btn.config(state='disabled'))
             self.root.after(0, lambda: self.progressbar.stop())
     
     def _load_system_prompt(self) -> str:
@@ -492,7 +472,7 @@ class LogInspectorGUI:
         """Save analysis results to file.
         保存分析结果到文件。
         """
-        if not hasattr(self, 'analysis_report'):
+        if self.analysis_report is None:
             messagebox.showwarning("警告 Warning", "没有可保存的结果 No results to save")
             return
         
