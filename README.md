@@ -2,10 +2,11 @@
 
 使用文本大模型分析安卓系统音频问题 / Analyze Android audio issues using Alibaba Cloud Bailian LLM.
 
-A CLI tool that analyzes Android logcat files and uses Alibaba Cloud Bailian (Qwen) LLM to infer audio playback states.
+A tool (CLI and GUI) that analyzes Android logcat files and uses Alibaba Cloud Bailian (Qwen) LLM to infer audio playback states.
 
 ## Features
 
+- 🖥️ **GUI Interface**: Easy-to-use graphical interface for Windows 11 and other platforms
 - 🔍 **Automatic Audio Log Filtering**: Pre-filters logcat for audio-related lines
 - 🪟 **Sliding Window Analysis**: Processes logs in configurable chunks with overlap
 - 🤖 **LLM-Powered State Detection**: Uses Qwen to identify PLAYING/MUTED/UNKNOWN states
@@ -13,6 +14,7 @@ A CLI tool that analyzes Android logcat files and uses Alibaba Cloud Bailian (Qw
 - 📝 **Dual Output**: Generates both JSON and Markdown reports
 - 🔒 **Data Masking**: Optional masking of sensitive information (emails, IPs, serials)
 - 🐛 **Debug Mode**: Saves API request/response for troubleshooting
+- 📋 **Specification Document Support**: Add custom log specification to guide analysis
 
 ## Installation
 
@@ -40,13 +42,51 @@ export BAILIAN_MODEL="qwen-plus"  # Default
 
 ## Usage
 
-### Basic Command
+### GUI Application (Recommended for Windows 11)
+
+#### Starting the GUI
+
+**On Windows:**
+```cmd
+run_gui.bat
+```
+
+Or using Python directly:
+```bash
+python run_gui.py
+```
+
+#### Using the GUI
+
+1. **Configuration Tab (配置)**:
+   - Enter your Alibaba Cloud Bailian API key
+   - Select the LLM model (default: qwen-plus)
+   - Configure analysis parameters (chunk size, overlap)
+   - Enable data masking if needed
+   - Click "Save" to store your API key for future use
+
+2. **Analysis Tab (分析)**:
+   - Click "Browse" to select a log file, or drag and drop a file onto the window
+   - Enter your log specification document (optional but recommended)
+     - Describe what different log tags and fields mean
+     - This helps the LLM understand your specific log format
+   - Click "Start Analysis" to begin
+
+3. **Results Tab (结果)**:
+   - View the analysis results in real-time
+   - See the state of each window and merged segments
+   - Save results to JSON and Markdown files
+   - Clear results when done
+
+### CLI Application
+
+#### Basic Command
 
 ```bash
 python -m src.cli analyze --log <path-to-log> --out <output-directory>
 ```
 
-### Full Options
+#### Full Options
 
 ```bash
 python -m src.cli analyze \
