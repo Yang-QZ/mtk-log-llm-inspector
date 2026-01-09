@@ -18,6 +18,12 @@ A tool (CLI and GUI) that analyzes Android logcat files and uses Alibaba Cloud B
 
 ## Installation
 
+### For End Users (No Development Needed)
+
+**Simply download the standalone executable** from the releases page - no Python installation required!
+
+### For Developers
+
 1. Clone the repository:
 ```bash
 git clone https://github.com/Yang-QZ/mtk-log-llm-inspector.git
@@ -40,11 +46,62 @@ export BAILIAN_BASE_URL="https://dashscope.aliyuncs.com/compatible-mode/v1"  # D
 export BAILIAN_MODEL="qwen-plus"  # Default
 ```
 
+### Building Standalone Executable
+
+To create a standalone executable that doesn't require Python:
+
+1. Install PyInstaller (if not already installed):
+```bash
+pip install pyinstaller
+```
+
+2. Run the build script:
+
+**On Windows:**
+```cmd
+build_exe.bat
+```
+
+**On Linux/Mac:**
+```bash
+./build_exe.sh
+```
+
+3. The executable will be created in the `dist/` directory:
+   - Windows: `dist/MTK_Log_Inspector.exe`
+   - Linux/Mac: `dist/MTK_Log_Inspector`
+
+You can then distribute this executable to users who don't have Python installed.
+
 ## Usage
 
-### GUI Application (Recommended for Windows 11)
+### GUI Application (Recommended for Windows)
 
-#### Starting the GUI
+#### Option 1: Using Standalone Executable (No Python Required) ⭐
+
+**For users without Python installed:**
+
+1. Download the pre-built executable `MTK_Log_Inspector.exe` from the releases page
+2. Double-click `MTK_Log_Inspector.exe` to launch the application
+3. No installation or Python setup needed!
+
+**Building the executable yourself:**
+
+If you want to build the executable from source:
+
+**On Windows:**
+```cmd
+build_exe.bat
+```
+
+**On Linux/Mac:**
+```bash
+./build_exe.sh
+```
+
+The executable will be created in the `dist/` directory. You can then distribute `MTK_Log_Inspector.exe` (Windows) or `MTK_Log_Inspector` (Linux/Mac) to users who don't have Python installed.
+
+#### Option 2: Running with Python
 
 **On Windows:**
 ```cmd
