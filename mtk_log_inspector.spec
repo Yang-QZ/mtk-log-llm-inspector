@@ -3,8 +3,8 @@
 PyInstaller spec file for MTK Log LLM Inspector GUI
 MTK日志大语言模型分析器GUI的PyInstaller配置文件
 
-This spec file is used to build a standalone Windows executable.
-此配置文件用于构建独立的Windows可执行文件。
+This spec file is used to build a standalone executable for Windows, Linux, and macOS.
+此配置文件用于构建Windows、Linux和macOS的独立可执行文件。
 """
 
 from PyInstaller.utils.hooks import collect_data_files
