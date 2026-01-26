@@ -212,4 +212,3 @@ __marimo__/
 # MTK Log LLM Inspector output directories
 output/
 out/
-_codeql_detected_source_root
