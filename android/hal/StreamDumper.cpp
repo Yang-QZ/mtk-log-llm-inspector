@@ -20,6 +20,7 @@
 
 #include <log/log.h>
 #include <unistd.h>
+#include <cerrno>
 #include <cstring>
 #include <algorithm>
 

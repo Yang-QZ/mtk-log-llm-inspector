@@ -381,8 +381,19 @@ class AudioDumpMonitor:
                 file_size = local_path.stat().st_size if local_path.exists() else 0
 
                 # Delete file and remove from .queue on device
+                # Validate filename to prevent shell injection
+                # Only allow alphanumeric, underscore, dot, and hyphen
+                if not re.match(r'^[\w\.\-]+$', filename):
+                    self.logger.error(f"Invalid filename format: {filename}")
+                    self.stats.add_failure()
+                    return False
+
                 queue_file = self.config.device_queue_file
-                delete_cmd = f"rm {device_path} && sed -i '/{filename}/d' {queue_file}"
+                # Use shlex-style escaping for shell safety
+                escaped_filename = filename.replace("'", "'\\''")
+                escaped_path = device_path.replace("'", "'\\''")
+                escaped_queue = queue_file.replace("'", "'\\''")
+                delete_cmd = f"rm '{escaped_path}' && sed -i '/{escaped_filename}/d' '{escaped_queue}'"
                 self._run_adb_command(["shell", delete_cmd], check=False)
 
                 # Record statistics
