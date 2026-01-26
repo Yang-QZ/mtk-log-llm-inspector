@@ -1,0 +1,14 @@
+{
+    "device_dump_path": "/data/vendor/audio_dump/",
+    "device_queue_file": "/data/vendor/audio_dump/.queue",
+    "local_save_path": "./audio_dumps",
+    "use_logcat": true,
+    "poll_interval": 10,
+    "pull_workers": 2,
+    "stats_interval": 60,
+    "adb_timeout": 30,
+    "max_retries": 3,
+    "retry_delay": 2,
+    "log_file": "audio_dump_monitor.log",
+    "log_level": "INFO"
+}

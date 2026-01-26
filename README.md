@@ -343,6 +343,73 @@ When `--mask` is enabled, the following patterns are masked:
 - Depends on Alibaba Cloud Bailian API availability
 - Analysis quality depends on LLM model capabilities
 
+## Audio Dump Automation System
+
+This project also includes an **Audio Dump Automation System** for automated collection of audio dump files from Android devices.
+
+### Overview
+
+The system consists of two parts:
+- **Android HAL端 (C++)**: Runs on device, manages audio dump file creation and notifications
+- **Windows监控端 (Python)**: Runs on PC, monitors and automatically pulls dump files
+
+### Features
+
+- 🎵 **Automatic Audio Dump**: Captures PCM audio data from StreamOut (playback) and StreamIn (recording)
+- 📁 **Smart File Management**: Auto-switches files at 100MB, uses 256KB buffer with 10MB flush
+- 📢 **Real-time Notification**: Uses logcat `AUDIO_DUMP_READY` messages for immediate notification
+- 🔄 **Backup Queue**: `.queue` file polling as backup mechanism
+- ⚡ **Concurrent Pulling**: Multiple worker threads for parallel file transfer
+- 📊 **Statistics Tracking**: Real-time statistics on transferred files
+
+### Quick Start
+
+#### 1. Enable Audio Dump on Device
+
+```bash
+adb root
+adb shell "setprop vendor.streamout.pcm.dump 1"  # Enable playback dump
+adb shell "setprop vendor.streamin.pcm.dump 1"   # Enable recording dump
+```
+
+#### 2. Start Windows Monitor
+
+```batch
+cd windows
+start_monitor.bat
+```
+
+#### 3. Play/Record Audio
+
+Files will be automatically pulled to `./audio_dumps/` directory.
+
+### Documentation
+
+- [Architecture Design](docs/architecture.md) - System architecture and data flow
+- [Deployment Guide](docs/deployment.md) - Step-by-step deployment instructions
+- [Troubleshooting](docs/troubleshooting.md) - Common issues and solutions
+- [Windows Client README](windows/README.md) - Detailed Windows client documentation
+
+### Project Structure (Audio Dump)
+
+```
+├── android/hal/              # Android HAL C++ code
+│   ├── AudioDumpManager.h/cpp   # Core manager (singleton)
+│   ├── StreamDumper.h/cpp       # Stream processor
+│   ├── StreamOut_integration.cpp # Integration example
+│   ├── StreamIn_integration.cpp  # Integration example
+│   └── Android.bp               # Build configuration
+├── windows/                  # Windows Python monitor
+│   ├── audio_dump_monitor.py    # Main monitor program
+│   ├── config.json              # Configuration file
+│   ├── start_monitor.bat        # Startup script
+│   └── README.md                # Usage documentation
+└── docs/                     # Documentation
+    ├── architecture.md          # Architecture design
+    ├── deployment.md            # Deployment guide
+    └── troubleshooting.md       # Troubleshooting guide
+```
+
 ## License
 
 See repository license.
