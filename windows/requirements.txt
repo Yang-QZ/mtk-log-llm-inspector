@@ -1,0 +1,3 @@
+# Audio Dump Monitor Requirements
+# Python 3.7+ required
+# No additional dependencies needed - uses only standard library
